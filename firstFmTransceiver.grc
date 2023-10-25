@@ -780,7 +780,7 @@ blocks:
     bus_structure: null
     coordinate: [504, 112.0]
     rotation: 0
-    state: true
+    state: enabled
 
 connections:
 - [analog_nbfm_rx_0, '0', audio_sink_0, '0']
