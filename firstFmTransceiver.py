@@ -72,18 +72,13 @@ class firstFmTransceiver(gr.top_block, Qt.QWidget):
         # Blocks
         ##################################################
 
-        self.rational_resampler_xxx_1 = filter.rational_resampler_fff(
-                interpolation=250,
-                decimation=96,
-                taps=[],
-                fractional_bw=0)
         self.rational_resampler_xxx_0 = filter.rational_resampler_ccc(
                 interpolation=100,
                 decimation=1,
                 taps=[],
                 fractional_bw=0)
         self.osmosdr_source_0 = osmosdr.source(
-            args="numchan=" + str(1) + " " + 'bladerf=0'
+            args="numchan=" + str(1) + " " + 'bladerf=0,biastee=1'
         )
         self.osmosdr_source_0.set_time_unknown_pps(osmosdr.time_spec_t())
         self.osmosdr_source_0.set_sample_rate(samp_rate)
@@ -138,13 +133,12 @@ class firstFmTransceiver(gr.top_block, Qt.QWidget):
         ##################################################
         # Connections
         ##################################################
-        self.connect((self.analog_nbfm_rx_0, 0), (self.rational_resampler_xxx_1, 0))
+        self.connect((self.analog_nbfm_rx_0, 0), (self.audio_sink_0, 0))
         self.connect((self.analog_nbfm_tx_0, 0), (self.rational_resampler_xxx_0, 0))
         self.connect((self.blocks_wavfile_source_0, 0), (self.analog_nbfm_tx_0, 0))
         self.connect((self.low_pass_filter_0, 0), (self.analog_nbfm_rx_0, 0))
         self.connect((self.osmosdr_source_0, 0), (self.low_pass_filter_0, 0))
         self.connect((self.rational_resampler_xxx_0, 0), (self.osmosdr_sink_0, 0))
-        self.connect((self.rational_resampler_xxx_1, 0), (self.audio_sink_0, 0))
 
 
     def closeEvent(self, event):
