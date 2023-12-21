@@ -298,7 +298,26 @@ def awgn(signal,SNR):
     # Add signal and noise 
     signal_noisy = signal + noise 
     
-    return signal_noisy    
+    return signal_noisy
+
+# Function to generate a block of BPSK from UTF-8 text
+def bpsk_gen_text(text_string):
+    # 1 bit per symbol for BPSK
+    m=1
+    M=2**m
+
+    # BPSK symbol values
+    bpsk = [-1+0j, 1+0j]
+
+    # Generate the binary data
+    bin_string = ''.join(format(ord(i), '08b') for i in text_string)
+    bin_array = np.array([int(bit) for bit in bin_string], dtype=np.uint8)
+
+    # Generate BPSK symbols
+    data = [bpsk[i] for i in bin_array]
+    data = np.array(data, np.complex64)
+
+    return data
 	
 # Function to generate a block of BPSK, QPSK or 16-QAM symbols
 def symbol_gen(nsym,mod_scheme):
